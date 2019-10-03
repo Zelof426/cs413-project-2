@@ -46,7 +46,7 @@ var score = 0;
 var score_display = new PIXI.Text("Score: " + score.toString(), {fill: "white"});
 stage.addChild(score_display);
 
-//Function for synamically updating the score
+//Function for dynamically updating the score
 function updateScore()
 {
     score += 1;
