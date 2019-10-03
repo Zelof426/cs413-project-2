@@ -58,45 +58,41 @@ function updateScore()
 bee_should_move = 0;
 bee_motivation = 3;
 score_gain = 0;
+reset_tween = 0;
+
+var tween;
 
 //Function to move the bee
 function beeMove()
 {
+    //removeAllTweens();
+
+    if (score_gain >= 10 && bee_motivation > 1)
+    {
+        bee_motivation -= 1;
+    }
+
+    distance_x = Math.abs(cat.position.x - bee.position.x);
+    distance_y = Math.abs(cat.position.y - bee.position.y);
+
+    avg_dist = (distance_x + distance_y) / 2;
+
+    time = (avg_dist * 10) * bee_motivation;
+
+    //tween = null;
+    if (reset_tween == 0)
+    {
+        tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
+        reset_tween = 1;
+    }
+    //tween.removeAllTweens();
+    tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
+
     //The Bee will move more frequently every 10 flowers eaten
     if (score_gain >= 10)
     {
-        bee_motivation -= 1;
+        bee_motivation += 1;
         score_gain = 0;
-    }
-
-    //The Bee moves toward the Cat
-    if (bee_should_move >= bee_motivation)
-    {
-        //Bee y movement
-        if (cat.position.y > bee.position.y)
-        {
-            bee.position.y += 32;
-        }
-        else if (cat.position.y < bee.position.y)
-        {
-            bee.position.y -= 32;
-        }
-
-        //Bee x movement
-        if (cat.position.x > bee.position.x)
-        {
-            bee.position.x += 32;
-        }
-        else if (cat.position.x < bee.position.x)
-        {
-            bee.position.x -= 32;
-        }
-
-        bee_should_move = 0;
-    }
-    else
-    {
-        bee_should_move += 1;
     }
 
     stage.addChild(bee);
