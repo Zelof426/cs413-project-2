@@ -6,36 +6,69 @@ gameport.appendChild(renderer.view);
 
 var stage = new PIXI.Container();
 
+PIXI.loader.add("assets.json");
+
 var texture = PIXI.Texture.fromImage("cat.png");
 
-var i;
+
+// Audio
+ /*const back_music = PIXI.sound.Sound.from({
+    url: "background.mp3",
+    autoPlay: true,
+    loop: true,
+    loaded: console.log('Loaded the sound');
+ });*/
+
+/*var back_music = PIXI.sound.Sound.from({
+    url: "background.mp3",
+    autoPlay: true,
+    preload: true,
+    volume: 1,
+    loaded: console.log('Loaded the sound');,
+    loop: true
+});
+back_music.play({loop: true});*/
+
+//PIXI.sound.add('background', 'background.mp3');
+//PIXI.sound.play('background');
+
+
+ /*PIXI.loader.add("background.mp3").load(ready);
+
+ var back_music;
+
+ function ready()
+ {
+    back_music = PIXI.audioManager.getAudio("background.mp3");
+ }*/
+
+
+// Create Start screen
+var start_screen = new PIXI.Sprite(PIXI.Texture.fromImage("start_screen.png"));
+start_screen.anchor.x = 0.5;
+start_screen.anchor.y = 0.5;
+start_screen.position.x = 480;
+start_screen.position.y = 400;
+
+//Player is prompted to press Enter to start playing
+stage.addChild(start_screen);
+
+var game_start = 0;
 
 // Create the Bee sprite
 var bee = new PIXI.Sprite(PIXI.Texture.fromImage("bee.png"));
-bee.anchor.x = 0.5;
-bee.anchor.y = 0.5;
-bee.position.x = Math.round(Math.floor((Math.random()*896)+64)/32)*32;
-bee.position.y = Math.round(Math.floor((Math.random()*736)+64)/32)*32;
-stage.addChild(bee);
+
 
 //Create the background of the map
 var grassland = new PIXI.Sprite(PIXI.Texture.fromImage("grassland.png"));
-grassland.anchor.x = 0.5;
-grassland.anchor.y = 0.5;
-grassland.position.x = 480;
-grassland.position.y = 400;
-stage.addChild(grassland);
+
 
 //Create the flower
 var flower_texture1 = PIXI.Texture.fromImage("flower1.png");
 var flower1 = new PIXI.Sprite(flower_texture1);
 flower1.texture = flower_texture1;
 
-flower1.anchor.x = 0.5;
-flower1.anchor.y = 0.5;
-flower1.position.x = Math.round(Math.floor((Math.random()*(896-64)+64))/64)*64;
-flower1.position.y = Math.round(Math.floor((Math.random()*(736-64)+64))/64)*64;
-stage.addChild(flower1);
+
 
 //Flower's "eaten" texture
 var flower_texture2 = PIXI.Texture.fromImage("flower2.png");
@@ -44,19 +77,55 @@ var flower_texture2 = PIXI.Texture.fromImage("flower2.png");
 //Score display initialized
 var score = 0;
 var score_display = new PIXI.Text("Score: " + score.toString(), {fill: "white"});
-stage.addChild(score_display);
+
+//A function to initialise the default game state.
+function start()
+{
+    //Placing bee
+    bee.anchor.x = 0.5;
+    bee.anchor.y = 0.5;
+    bee.position.x = Math.round(Math.floor((Math.random()*896)+64)/32)*32;
+    bee.position.y = Math.round(Math.floor((Math.random()*736)+64)/32)*32;
+    stage.addChild(bee);
+
+    //Placing background
+    grassland.anchor.x = 0.5;
+    grassland.anchor.y = 0.5;
+    grassland.position.x = 480;
+    grassland.position.y = 400;
+    stage.addChild(grassland);
+
+    //Placing first flower
+    flower1.anchor.x = 0.5;
+    flower1.anchor.y = 0.5;
+    flower1.position.x = Math.round(Math.floor((Math.random()*(896-64)+64))/64)*64;
+    flower1.position.y = Math.round(Math.floor((Math.random()*(736-64)+64))/64)*64;
+    stage.addChild(flower1);
+
+    //Placing cat
+    cat.anchor.x = 0.5;
+    cat.anchor.y = 0.5;
+    cat.position.x = 512;
+    cat.position.y = 448;
+    cat.height = 32;
+    cat.width = 32;
+    stage.addChild(cat);
+
+    //Adding score
+    stage.addChild(score_display);
+    }
 
 //Function for dynamically updating the score
 function updateScore()
 {
     score += 1;
     score_gain += 1;
-    score_display.setText("Score: " + score.toString());
+    score_display.text = "Score: " + score.toString();
 }
 
 //Variables used to determine Bee movement and speed
 bee_should_move = 0;
-bee_motivation = 3;
+bee_motivation = 4;
 score_gain = 0;
 reset_tween = 0;
 
@@ -65,11 +134,10 @@ var tween;
 //Function to move the bee
 function beeMove()
 {
-    //removeAllTweens();
-
-    if (score_gain >= 10 && bee_motivation > 1)
+    if (score_gain >= 5 && bee_motivation > 1)
     {
-        bee_motivation -= 1;
+        bee_motivation -= 0.5;
+        score_gain = 0;
     }
 
     distance_x = Math.abs(cat.position.x - bee.position.x);
@@ -79,21 +147,13 @@ function beeMove()
 
     time = (avg_dist * 10) * bee_motivation;
 
-    //tween = null;
     if (reset_tween == 0)
     {
         tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
         reset_tween = 1;
     }
-    //tween.removeAllTweens();
-    tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
 
-    //The Bee will move more frequently every 10 flowers eaten
-    if (score_gain >= 10)
-    {
-        bee_motivation += 1;
-        score_gain = 0;
-    }
+    tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
 
     stage.addChild(bee);
 
@@ -117,22 +177,14 @@ function beeMove()
 //Create the Cat as the player character
 var cat = new PIXI.Sprite(texture);
 
-cat.anchor.x = 0.5;
-cat.anchor.y = 0.5;
-
-cat.position.x = 512;
-cat.position.y = 448;
-
-cat.height = 32;
-cat.width = 32;
-
-stage.addChild(cat);
 
 var cat_direction = 0; //Cat is facing left
 
-var flower_locations_x = [30];
-//flower_locations_x.push(flower);
-var flower_locations_y = [25];
+var flower_locations_x = [100];
+flower_locations_x.push(flower1);
+var flower_locations_y = [100];
+
+var flower_conflict = 0;
 function moveFlower()
 {
     //Move the flower
@@ -151,10 +203,12 @@ function moveFlower()
 
     //Check if a flower has grown at this location
     if (flower_locations_x.includes(flower1.position.x) &&
-        flower_locations_y.includes(flower1.position.y))
+        flower_locations_y.includes(flower1.position.y) &&
+        flower_conflict < 10)
     {
-        //If a flower has been ehre before, pick a new location
+        //If a flower has been here before, pick a new location
         moveFlower();
+        flower_conflict += 1;
     }
     //Otherwise, note that a flower has now grown at this location
     else
@@ -165,13 +219,39 @@ function moveFlower()
 }
 
 
-//Handles events for WASD and E
+//Handles events for Enter, WASD, E, and R
 function keydownEventHandler(e)
 {
+    //If the Bee has stung the Cat, then the gameover screen is displayed
+    if (cat.position.x >= bee.position.x &&
+        cat.position.x <= bee.position.x+32 &&
+        cat.position.y >= bee.position.y &&
+        cat.position.y <= bee.position.y+32 &&
+        game_start == 1)
+    {
+        var game_over = new PIXI.Sprite(PIXI.Texture.fromImage("game_over.png"));
+        game_over.anchor.x = 0.5;
+        game_over.anchor.y = 0.5;
+        game_over.position.x = 480;
+        game_over.position.y = 400;
+
+        //Player is prompted to press R to restart
+        stage.addChild(game_over);
+    }
+
+    // Start Game
+    if (e.keyCode == 13 && game_start == 0)
+    {
+        game_start = 1;
+        stage.removeChild(start_screen);
+        start();
+    }
+
+
     //Cat movement with WASD
 
     //W Key
-    if (e.keyCode == 87)
+    if (e.keyCode == 87 && game_start == 1)
     {
         if (cat.position.y >= 64)
         {
@@ -181,7 +261,7 @@ function keydownEventHandler(e)
     }
 
     //S Key
-    if (e.keyCode == 83)
+    if (e.keyCode == 83 && game_start == 1)
     {
         if (cat.position.y <= 736)
         {
@@ -191,7 +271,7 @@ function keydownEventHandler(e)
     }
 
     //A Key
-    if (e.keyCode == 65)
+    if (e.keyCode == 65 && game_start == 1)
     {
         //Checking if the cat needs to change direction it is facing
         if (cat_direction == 1)
@@ -210,7 +290,7 @@ function keydownEventHandler(e)
     }
 
     //D Key
-    if (e.keyCode == 68)
+    if (e.keyCode == 68 && game_start == 1)
     {
         //Checking if the cat needs to change direction it is facing
         if (cat_direction == 0)
@@ -229,7 +309,7 @@ function keydownEventHandler(e)
     }
 
     //Eating a flower with E
-    if (e.keyCode == 69)
+    if (e.keyCode == 69 && game_start == 1)
     {
         //If the cat is on top of the flower, then it can be eaten
         if (cat.position.x >= flower1.position.x &&
@@ -260,8 +340,10 @@ function keydownEventHandler(e)
     //Restarting with R
     if (e.keyCode == 82)
     {
-        //Program.restart();
-        window.location.reload(true);
+        //Resets the game to its default state
+        score = 0;
+        score_display.text = "Score: " + score.toString();
+        start();
     }
 }
 
@@ -270,8 +352,8 @@ document.addEventListener("keydown", keydownEventHandler);
 
 function mouseHandler(e)
 {
-  cat.position.x = 200;
-  cat.position.y = 200;
+    cat.position.x = 200;
+    cat.position.y = 200;
 }
 
 cat.interactive = true;
@@ -279,8 +361,8 @@ cat.on("mousedown", mouseHandler);
 
 function animate()
 {
-  requestAnimationFrame(animate);
-  renderer.render(stage);
+    requestAnimationFrame(animate);
+    renderer.render(stage);
 }
 
 animate();
