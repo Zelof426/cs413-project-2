@@ -8,39 +8,26 @@ var stage = new PIXI.Container();
 
 PIXI.loader.add("assets.json");
 
+
+//Audio
+PIXI.loader.add("background.mp3").load(ready);
+
+var audio;
+function ready()
+{
+    audio = PIXI.audioManager.getAudio("background.mp3");
+    audio.loop = true;
+    audio.volume = .35;
+}
+
 var texture = PIXI.Texture.fromImage("cat.png");
-
-
-// Audio
- /*const back_music = PIXI.sound.Sound.from({
-    url: "background.mp3",
-    autoPlay: true,
-    loop: true,
-    loaded: console.log('Loaded the sound');
- });*/
-
-/*var back_music = PIXI.sound.Sound.from({
-    url: "background.mp3",
-    autoPlay: true,
-    preload: true,
-    volume: 1,
-    loaded: console.log('Loaded the sound');,
-    loop: true
-});
-back_music.play({loop: true});*/
-
-//PIXI.sound.add('background', 'background.mp3');
-//PIXI.sound.play('background');
-
-
- /*PIXI.loader.add("background.mp3").load(ready);
 
  var back_music;
 
  function ready()
  {
     back_music = PIXI.audioManager.getAudio("background.mp3");
- }*/
+ }
 
 
 // Create Start screen
@@ -352,8 +339,7 @@ document.addEventListener("keydown", keydownEventHandler);
 
 function mouseHandler(e)
 {
-    cat.position.x = 200;
-    cat.position.y = 200;
+    audio.play();
 }
 
 cat.interactive = true;
