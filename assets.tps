@@ -32,7 +32,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>pixijs4</string>
+        <string>json</string>
         <key>textureFileName</key>
         <filename></filename>
         <key>flipPVR</key>
@@ -181,9 +181,9 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">temp/bee.png</key>
-            <key type="filename">temp/flower1.png</key>
-            <key type="filename">temp/flower2.png</key>
+            <key type="filename">../bee.png</key>
+            <key type="filename">../flower1.png</key>
+            <key type="filename">../flower2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -196,7 +196,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">temp/cat.png</key>
+            <key type="filename">../cat.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -206,16 +206,46 @@
                 <rect>67,58,133,115</rect>
                 <key>scale9Paddings</key>
                 <rect>67,58,133,115</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../game_over.png</key>
+            <key type="filename">../start_screen.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>240,200,480,400</rect>
+                <key>scale9Paddings</key>
+                <rect>240,200,480,400</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../grassland.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>250,200,500,400</rect>
+                <key>scale9Paddings</key>
+                <rect>250,200,500,400</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>temp/bee.png</filename>
-            <filename>temp/cat.png</filename>
-            <filename>temp/flower1.png</filename>
-            <filename>temp/flower2.png</filename>
+            <filename>../flower2.png</filename>
+            <filename>../bee.png</filename>
+            <filename>../flower1.png</filename>
+            <filename>../start_screen.png</filename>
+            <filename>../cat.png</filename>
+            <filename>../game_over.png</filename>
+            <filename>../grassland.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

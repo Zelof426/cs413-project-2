@@ -3,11 +3,7 @@ var renderer = PIXI.autoDetectRenderer(960, 800, {backgroundColor : 0xb8a4f5});
 gameport.appendChild(renderer.view);
 var stage = new PIXI.Container();
 
-//Load in Sprite Sheet
-PIXI.loader.add("assets.json");
-
-
-// Audio ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// AUDIO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Background music
 PIXI.loader.add("serene.mp3").load(readySerene);
@@ -38,44 +34,57 @@ function readyDefeat()
 }
 
 
-// Visuals /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VISUALS /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Create Start screen
-var start_screen = new PIXI.Sprite(PIXI.Texture.fromImage("start_screen.png"));
-start_screen.anchor.x = 0.5;
-start_screen.anchor.y = 0.5;
-start_screen.position.x = 480;
-start_screen.position.y = 400;
+var start_screen;
+var grassland;
+var bee;
+var flower_texture1;
+var flower_texture2;
+var flower1;
 
-// Player is prompted to press Enter to start playing
-stage.addChild(start_screen);
-var game_start = 0;
+// Load in Sprite Sheet
+PIXI.loader.add("assets.json").load(readyVisuals);
 
-// Create the Cat sprite
+function readyVisuals()
+{
+    // Create Start screen
+    start_screen = new PIXI.Sprite(PIXI.Texture.fromFrame("start_screen.png"));
+    start_screen.anchor.x = 0.5;
+    start_screen.anchor.y = 0.5;
+    start_screen.position.x = 480;
+    start_screen.position.y = 400;
+
+    // Create the background of the map
+    grassland = new PIXI.Sprite(PIXI.Texture.fromFrame("grassland.png"));
+
+    // Player is prompted to press Enter to start playing
+    stage.addChild(start_screen);
+
+    // Create the Bee sprite
+    bee = new PIXI.Sprite(PIXI.Texture.fromFrame("bee.png"));
+
+    // Create the flower
+    flower_texture1 = PIXI.Texture.fromFrame("flower1.png");
+    flower1 = new PIXI.Sprite(flower_texture1);
+    flower1.texture = flower_texture1;
+
+    // Flower's "eaten" texture
+    flower_texture2 = PIXI.Texture.fromFrame("flower2.png");
+}
+
+// Create the Cat sprite (Player)
 var texture = PIXI.Texture.fromImage("cat.png");
-
-// Create the Bee sprite
-var bee = new PIXI.Sprite(PIXI.Texture.fromImage("bee.png"));
-
-
-// Create the background of the map
-var grassland = new PIXI.Sprite(PIXI.Texture.fromImage("grassland.png"));
-
-
-// Create the flower
-var flower_texture1 = PIXI.Texture.fromImage("flower1.png");
-var flower1 = new PIXI.Sprite(flower_texture1);
-flower1.texture = flower_texture1;
-
-
-
-// Flower's "eaten" texture
-var flower_texture2 = PIXI.Texture.fromImage("flower2.png");
-
 
 // Score display initialized
 var score = 0;
 var score_display = new PIXI.Text("Score: " + score.toString(), {fill: "white"});
+
+
+// INITIALIZATION //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Variable to determine if the game has been properly initialized yet
+var game_start = 0;
 
 // A function to initialise the default game state.
 function start()
@@ -124,6 +133,9 @@ function updateScore()
     score_display.text = "Score: " + score.toString();
 }
 
+
+// GAMEPLAY ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Variables used to determine Bee movement and speed
 bee_should_move = 0;
 bee_motivation = 4;
@@ -132,20 +144,22 @@ reset_tween = 0;
 
 var tween;
 
-// Function to move the bee
+// Function to manage the movement of the bee
 function beeMove()
 {
+    // With changes to bee_motivation, the bee's speed will change
     if (score_gain >= 5 && bee_motivation > 1)
     {
         bee_motivation -= 0.5;
         score_gain = 0;
     }
 
+    // Speed is also determined by proximity to the player
     distance_x = Math.abs(cat.position.x - bee.position.x);
     distance_y = Math.abs(cat.position.y - bee.position.y);
-
     avg_dist = (distance_x + distance_y) / 2;
 
+    // The time is calculated and used in the tween
     time = (avg_dist * 10) * bee_motivation;
 
     if (reset_tween == 0)
@@ -153,7 +167,7 @@ function beeMove()
         tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
         reset_tween = 1;
     }
-
+    // The tween dynamically updates whenever the player changes position, overriding any previous tween
     tween = createjs.Tween.get(bee.position, {override:true}).to({x: cat.position.x, y: cat.position.y}, time);
 
     stage.addChild(bee);
@@ -170,7 +184,7 @@ function beeMove()
         game_over.position.x = 480;
         game_over.position.y = 400;
 
-        // Player is prompted to press R to restart
+        // Player is prompted to press R to restart while the defeat tone plays
         stage.addChild(game_over);
         serene.stop();
         defeat.play();
@@ -180,14 +194,16 @@ function beeMove()
 // Create the Cat as the player character
 var cat = new PIXI.Sprite(texture);
 
+// Cat is facing left
+var cat_direction = 0;
 
-var cat_direction = 0; //Cat is facing left
-
+// An array to keep track of flower placements to avoid unnecessary overlap
 var flower_locations_x = [100];
 flower_locations_x.push(flower1);
 var flower_locations_y = [100];
-
 var flower_conflict = 0;
+
+// Move the flower to a new location once eaten
 function moveFlower()
 {
     // Move the flower
@@ -209,7 +225,7 @@ function moveFlower()
         flower_locations_y.includes(flower1.position.y) &&
         flower_conflict < 10)
     {
-        // If a flower has been here before, pick a new location
+        // If a flower has been here before, pick a new location (allows for overlap as the stage fills up)
         moveFlower();
         flower_conflict += 1;
     }
@@ -221,6 +237,8 @@ function moveFlower()
     }
 }
 
+
+// EVENT HANDLING //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Handles events for Enter, WASD, E, and R
 function keydownEventHandler(e)
@@ -242,7 +260,7 @@ function keydownEventHandler(e)
         stage.addChild(game_over);
     }
 
-    // Start Game
+    // Enter Key: Start Game
     if (e.keyCode == 13 && game_start == 0)
     {
         game_start = 1;
@@ -253,7 +271,7 @@ function keydownEventHandler(e)
 
     // Cat movement with WASD
 
-    // W Key
+    // W Key: Move Up
     if (e.keyCode == 87 && game_start == 1)
     {
         if (cat.position.y >= 64)
@@ -263,7 +281,7 @@ function keydownEventHandler(e)
         beeMove();
     }
 
-    // S Key
+    // S Key: Move Down
     if (e.keyCode == 83 && game_start == 1)
     {
         if (cat.position.y <= 736)
@@ -273,7 +291,7 @@ function keydownEventHandler(e)
         beeMove();
     }
 
-    // A Key
+    // A Key: Move Left
     if (e.keyCode == 65 && game_start == 1)
     {
         // Checking if the cat needs to change direction it is facing
@@ -292,7 +310,7 @@ function keydownEventHandler(e)
         beeMove();
     }
 
-    // D Key
+    // D Key: Move Right
     if (e.keyCode == 68 && game_start == 1)
     {
         // Checking if the cat needs to change direction it is facing
@@ -311,7 +329,7 @@ function keydownEventHandler(e)
         beeMove();
     }
 
-    // Eating a flower with E
+    // E Key: Eating Flowers
     if (e.keyCode == 69 && game_start == 1)
     {
         // If the cat is on top of the flower, then it can be eaten
@@ -320,7 +338,7 @@ function keydownEventHandler(e)
             cat.position.y >= flower1.position.y &&
             cat.position.y <= flower1.position.y+32)
         {
-
+            // Jingle to accompany the eating of a flower
             jingle.play();
 
             // Make an "eaten" flower to replace the original
@@ -343,7 +361,7 @@ function keydownEventHandler(e)
         beeMove();
     }
 
-    // Restarting with R
+    // R Key: Restart Game
     if (e.keyCode == 82)
     {
         // Resets the game to its default state
@@ -355,7 +373,7 @@ function keydownEventHandler(e)
 
 document.addEventListener("keydown", keydownEventHandler);
 
-
+// Mouse Handler is mostly used for testing and debugging
 /*function mouseHandler(e)
 {
     serene.play();
@@ -363,6 +381,9 @@ document.addEventListener("keydown", keydownEventHandler);
 
 cat.interactive = true;
 cat.on("mousedown", mouseHandler);*/
+
+
+// ANIMATION ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function animate()
 {

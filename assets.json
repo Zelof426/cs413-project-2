@@ -31,17 +31,38 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 	"sourceSize": {"w":32,"h":32}
-}},
-"animations": {
-	"flower": ["flower1.png","flower2.png"]
 },
+"game_over.png":
+{
+	"frame": {"x":363,"y":0,"w":960,"h":800},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":800},
+	"sourceSize": {"w":960,"h":800}
+},
+"grassland.png":
+{
+	"frame": {"x":0,"y":800,"w":1000,"h":800},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":800},
+	"sourceSize": {"w":1000,"h":800}
+},
+"start_screen.png":
+{
+	"frame": {"x":1000,"y":800,"w":960,"h":800},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":800},
+	"sourceSize": {"w":960,"h":800}
+}},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "assets.png",
 	"format": "RGBA8888",
-	"size": {"w":363,"h":231},
+	"size": {"w":1960,"h":1600},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0cb9ebaf263c7b305ae70efd2a55773c:d9ca48bcbbb0712ee61b7d80a98a19e3:a759b6bbc8381ac9c472b28f589ad0d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:cba7ad8299cf36e1e66da4e0eba3c992:fc04ebeb1937626e00a47d0de07ceb3b:a759b6bbc8381ac9c472b28f589ad0d6$"
 }
 }
