@@ -88,9 +88,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -209,6 +209,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../credits.png</key>
             <key type="filename">../game_over.png</key>
             <key type="filename">../start_screen.png</key>
             <struct type="IndividualSpriteSettings">
@@ -246,6 +247,7 @@
             <filename>../cat.png</filename>
             <filename>../game_over.png</filename>
             <filename>../grassland.png</filename>
+            <filename>../credits.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

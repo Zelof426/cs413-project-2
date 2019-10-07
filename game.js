@@ -37,6 +37,7 @@ function readyDefeat()
 // VISUALS /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var start_screen;
+var credits;
 var grassland;
 var bee;
 var flower_texture1;
@@ -54,6 +55,9 @@ function readyVisuals()
     start_screen.anchor.y = 0.5;
     start_screen.position.x = 480;
     start_screen.position.y = 400;
+
+    // Create Credits screen
+    credits = new PIXI.Sprite(PIXI.Texture.fromFrame("credits.png"));
 
     // Create the background of the map
     grassland = new PIXI.Sprite(PIXI.Texture.fromFrame("grassland.png"));
@@ -85,6 +89,9 @@ var score_display = new PIXI.Text("Score: " + score.toString(), {fill: "white"})
 
 // Variable to determine if the game has been properly initialized yet
 var game_start = 0;
+
+// Variable to track if the Credits screen is being displayed
+var credits_on = 0;
 
 // A function to initialise the default game state.
 function start()
@@ -240,7 +247,7 @@ function moveFlower()
 
 // EVENT HANDLING //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Handles events for Enter, WASD, E, and R
+// Handles events for Enter, C, WASD, E, and R
 function keydownEventHandler(e)
 {
     // If the Bee has stung the Cat, then the gameover screen is displayed
@@ -258,6 +265,29 @@ function keydownEventHandler(e)
 
         // Player is prompted to press R to restart
         stage.addChild(game_over);
+    }
+
+    // C Key: Credits Toggle
+    if (e.keyCode == 67)
+    {
+        // Turns on the Credits screen (can be turned on mid-game)
+        if (credits_on == 0)
+        {
+            credits_on = 1;
+
+            credits.anchor.x = 0.5;
+            credits.anchor.y = 0.5;
+            credits.position.x = 480;
+            credits.position.y = 400;
+            stage.addChild(credits);
+        }
+        // Turns off the Credits Screen
+        else
+        {
+            credits_on = 0;
+
+            stage.removeChild(credits);
+        }
     }
 
     // Enter Key: Start Game

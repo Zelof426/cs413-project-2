@@ -2,7 +2,7 @@
 
 "bee.png":
 {
-	"frame": {"x":0,"y":0,"w":32,"h":32},
+	"frame": {"x":64,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -10,15 +10,23 @@
 },
 "cat.png":
 {
-	"frame": {"x":32,"y":0,"w":267,"h":231},
+	"frame": {"x":96,"y":0,"w":267,"h":231},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":267,"h":231},
 	"sourceSize": {"w":267,"h":231}
 },
+"credits.png":
+{
+	"frame": {"x":0,"y":231,"w":960,"h":800},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":800},
+	"sourceSize": {"w":960,"h":800}
+},
 "flower1.png":
 {
-	"frame": {"x":299,"y":0,"w":32,"h":32},
+	"frame": {"x":0,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -26,7 +34,7 @@
 },
 "flower2.png":
 {
-	"frame": {"x":331,"y":0,"w":32,"h":32},
+	"frame": {"x":32,"y":0,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -34,7 +42,7 @@
 },
 "game_over.png":
 {
-	"frame": {"x":363,"y":0,"w":960,"h":800},
+	"frame": {"x":0,"y":1031,"w":960,"h":800},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":800},
@@ -42,7 +50,7 @@
 },
 "grassland.png":
 {
-	"frame": {"x":0,"y":800,"w":1000,"h":800},
+	"frame": {"x":0,"y":2631,"w":1000,"h":800},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":800},
@@ -50,7 +58,7 @@
 },
 "start_screen.png":
 {
-	"frame": {"x":1000,"y":800,"w":960,"h":800},
+	"frame": {"x":0,"y":1831,"w":960,"h":800},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":800},
@@ -61,8 +69,8 @@
 	"version": "1.0",
 	"image": "assets.png",
 	"format": "RGBA8888",
-	"size": {"w":1960,"h":1600},
+	"size": {"w":1000,"h":3431},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:cba7ad8299cf36e1e66da4e0eba3c992:fc04ebeb1937626e00a47d0de07ceb3b:a759b6bbc8381ac9c472b28f589ad0d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:44c6c05d3669aef8a0f03e7b9009eeec:e96943cebd206e09f87ba6748d212237:a759b6bbc8381ac9c472b28f589ad0d6$"
 }
 }
